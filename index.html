@@ -114,7 +114,8 @@ input[type=text]:focus{border-color:var(--acc2);box-shadow:0 0 0 3px rgba(56,189
 <input type="file" id="file" accept="application/pdf,.pdf" title="Pilih file PDF">
 </div>
 <div class="msg" id="err1"></div>
-<div class="row"><button class="btn g" id="back1">Ganti petugas</button></div>
+<div class="row"><button class="btn" id="pick" type="button">Pilih File PDF</button><button class="btn g" id="back1" type="button">Ganti petugas</button></div>
+<p class="d" style="margin:14px 0 0;font-size:12.5px">Jendela pilih file tidak muncul? Gunakan salah satu cara ini: <b>seret file</b> ke kotak di atas, atau <b>salin file</b> di File Explorer (Ctrl+C) lalu tekan <b>Ctrl+V</b> di halaman ini.</p>
 </section>
 
 <section class="card" id="p2r" hidden>
@@ -144,8 +145,9 @@ input[type=text]:focus{border-color:var(--acc2);box-shadow:0 0 0 3px rgba(56,189
 <div class="b"><div style="text-align:center;font-weight:700;margin:2px 0 10px" id="pvs">ARRIVAL CHECKED</div><div id="pv"></div>
 <div class="o">IMMIGRATION OFFICER<div class="sg"></div><div id="pvn"></div></div></div>
 </div>
-<div class="row" style="justify-content:center"><button class="btn" id="dl">Unduh PDF</button><button class="btn g" id="again">Pilih petugas lain</button></div>
+<div class="row" style="justify-content:center"><button class="btn" id="dl">Unduh PDF</button><button class="btn g" id="newfile">Unggah file baru</button><button class="btn g" id="again">Pilih petugas lain</button></div>
 </section>
+<div style="text-align:center;font-size:11px;color:var(--mut);opacity:.7;margin-top:6px">Versi 6 &middot; 23 Nov 2026</div>
 </div>
 
 <script>
@@ -621,7 +623,12 @@ function err(id,t){const e=$(id);e.textContent=t||"";e.classList.toggle("show",!
 const drop=$("drop"),file=$("file");
 ["dragenter","dragover"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add("over")}));
 ["dragleave","drop"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove("over")}));
-drop.addEventListener("drop",e=>{if(e.dataTransfer.files[0])handle(e.dataTransfer.files[0])});
+drop.addEventListener("drop",e=>{e.stopPropagation();if(e.dataTransfer.files[0])handle(e.dataTransfer.files[0])});
+const canUp=()=>!$("p2").hidden||!$("p2r").hidden;
+window.addEventListener("dragover",e=>e.preventDefault());
+window.addEventListener("drop",e=>{e.preventDefault();const f=e.dataTransfer&&e.dataTransfer.files[0];if(f&&canUp())handle(f)});
+document.addEventListener("paste",e=>{const fs=[...((e.clipboardData&&e.clipboardData.files)||[])];const f=fs.find(x=>x.type==="application/pdf"||/\.pdf$/i.test(x.name));if(f&&canUp()){e.preventDefault();handle(f)}});
+$("pick").onclick=()=>{try{file.click()}catch(e){console.error(e)}};
 file.onchange=()=>{const f=file.files[0];file.value="";if(f)handle(f)};
 
 async function handle(f){
@@ -645,7 +652,7 @@ async function handle(f){
   loaded=true;$("p2").hidden=true;$("p2r").hidden=false;
  }catch(e){
   console.error(e);$("fname").textContent="PDF, maksimal 2 MB";
-  err("err1","Data tidak terbaca. Pastikan ini PDF E-Clearance asli (bukan hasil scan/gambar).");
+  err("err1","File tidak dapat dibaca ("+((e&&e.message)||e)+"). Pastikan ini PDF E-Clearance asli, bukan hasil scan atau foto.");
  }
 }
 function parseLoose(t){
@@ -782,7 +789,9 @@ $("dl").onclick=async()=>{
  }catch(e){if(e&&e.code==="declined")return;console.error(e)}
  const a=document.createElement("a");a.href=blobUrl;a.download=fn;document.body.appendChild(a);a.click();a.remove();
 };
-$("again").onclick=()=>{$("p3").hidden=true;$("p1").hidden=false;setStep(1);q.value="";officer=null;$("chosen").classList.remove("show");$("next").disabled=true;q.focus();window.scrollTo({top:0,behavior:"smooth"})};
+function freshUpload(){loaded=false;file.value="";err("err1","");err("warn","");$("fname").textContent="PDF, maksimal 2 MB"}
+$("again").onclick=()=>{freshUpload();$("p3").hidden=true;$("p2").hidden=true;$("p2r").hidden=true;$("p1").hidden=false;setStep(1);q.value="";officer=null;$("chosen").classList.remove("show");$("next").disabled=true;q.focus();window.scrollTo({top:0,behavior:"smooth"})};
+$("newfile").onclick=()=>{freshUpload();$("p3").hidden=true;$("p2r").hidden=true;$("p2").hidden=false;setStep(2);window.scrollTo({top:0,behavior:"smooth"})};
 </script>
 </body>
 </html>
