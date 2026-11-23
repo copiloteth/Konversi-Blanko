@@ -147,7 +147,7 @@ input[type=text]:focus{border-color:var(--acc2);box-shadow:0 0 0 3px rgba(56,189
 </div>
 <div class="row" style="justify-content:center"><button class="btn" id="dl">Unduh PDF</button><button class="btn g" id="newfile">Unggah file baru</button><button class="btn g" id="again">Pilih petugas lain</button></div>
 </section>
-<div style="text-align:center;font-size:11px;color:var(--mut);opacity:.7;margin-top:6px">Versi 6 &middot; 23 Nov 2026</div>
+<div style="text-align:center;font-size:11px;color:var(--mut);opacity:.7;margin-top:6px">Versi 7 &middot; 23 Nov 2026</div>
 </div>
 
 <script>
@@ -752,7 +752,7 @@ function build(d,o){
   doc.setFont("helvetica","normal").setFontSize(10);doc.text(r[0],137.8,y);doc.text(":",230.9,y);
   if(r[0]==="CREW"||r[0]==="PASSENGER"){
    const a=r[0]==="CREW"?[d.cwna,d.cwni]:[d.pwna,d.pwni];
-   doc.text(a[0],282,y,{align:"right"});doc.text("WNA",286,y);doc.text(a[1],346,y,{align:"right"});doc.text("WNI",350,y);
+   doc.text(a[0],264,y,{align:"center"});doc.text("WNA",290,y);doc.text(a[1],344,y,{align:"center"});doc.text("WNI",370,y);
   }else{
    let fs=10;doc.setFontSize(fs);const mw=243;
    while(doc.getTextWidth(r[1])>mw&&fs>6){fs-=.5;doc.setFontSize(fs)}
