@@ -10736,7 +10736,11 @@ $("pick").onclick=()=>{try{file.click()}catch(e){console.error(e)}};
 file.onchange=()=>{const f=file.files[0];file.value="";if(f)handle(f)};
 
 async function extractQR(pdf){
- const page=await pdf.getPage(1),vp=page.getViewport({scale:5}),cv=document.createElement("canvas");
+ for(const sc of [5,3,2]){try{const r=await extractQR1(pdf,sc);if(r)return r}catch(e){console.error("QR scale",sc,e)}}
+ return null;
+}
+async function extractQR1(pdf,sc){
+ const page=await pdf.getPage(1),vp=page.getViewport({scale:sc}),cv=document.createElement("canvas");
  cv.width=Math.ceil(vp.width);cv.height=Math.ceil(vp.height);
  const cx=cv.getContext("2d",{willReadFrequently:true});cx.fillStyle="#fff";cx.fillRect(0,0,cv.width,cv.height);
  await page.render({canvasContext:cx,viewport:vp}).promise;
