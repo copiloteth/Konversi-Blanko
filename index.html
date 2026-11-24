@@ -10888,8 +10888,8 @@ function build(d,o){
    doc.text(r[1],240.7,y);
   }
  });
- if(window._qrImg){const q=window._qrImg,qs=84,w=q.w>=q.h?qs:qs*q.w/q.h,h=q.h>q.w?qs:qs*q.h/q.w;doc.addImage(q.url,"PNG",145,355,w,h)}
- const cx=403.4;doc.setFont("helvetica","normal").setFontSize(10);doc.text("IMMIGRATION OFFICER",cx,345.2,{align:"center"});
+ if(window._qrImg){const q=window._qrImg,qs=84,w=q.w>=q.h?qs:qs*q.w/q.h,h=q.h>q.w?qs:qs*q.h/q.w;doc.addImage(q.url,"PNG",145,355,w,h);doc.setFont("helvetica","normal").setFontSize(7.5);doc.text("INSW approval",145+qs/2,349,{align:"center"})}
+ const cx=403.4;doc.setFont("helvetica","normal").setFontSize(10);doc.text("INSPECTING OFFICER",cx,345.2,{align:"center"});
  const nm=o.name.toUpperCase();let fs=9.5;doc.setFont("helvetica","bold").setFontSize(fs);
  while(doc.getTextWidth(nm)>150&&fs>6){fs-=.25;doc.setFontSize(fs)}
  doc.text(nm,cx,419,{align:"center"});doc.setFontSize(9.5);doc.text("NIP "+o.nip,cx,432.5,{align:"center"});
