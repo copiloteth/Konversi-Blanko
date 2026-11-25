@@ -10865,8 +10865,8 @@ $("reset").onclick=()=>{loaded=false;file.value="";err("err1","");$("fname").tex
 
 /* ---------- Step 3: buat blanko ---------- */
 function build(d,o){
- const {jsPDF}=window.jspdf,doc=new jsPDF({unit:"pt",format:[361.9,373.9]});
- const OX=128.45,OY=78.65;
+ const {jsPDF}=window.jspdf,doc=new jsPDF({unit:"pt",format:"a4"});
+ const OX=0,OY=0;
  {const T=doc.text.bind(doc),R=doc.rect.bind(doc),L=doc.line.bind(doc),I=doc.addImage.bind(doc);
  doc.text=(t,x,y,o)=>T(t,x-OX,y-OY,o);doc.rect=(x,y,w,h,st)=>R(x-OX,y-OY,w,h,st);doc.line=(a,b,c,d)=>L(a-OX,b-OY,c-OX,d-OY);doc.addImage=(i,f,x,y,w,h)=>I(i,f,x-OX,y-OY,w,h)}
  const K=.647,mid=310.6;
